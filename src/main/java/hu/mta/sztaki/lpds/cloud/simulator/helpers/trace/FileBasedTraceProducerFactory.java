@@ -91,6 +91,8 @@ public class FileBasedTraceProducerFactory {
 			producer = srtg;
 		} else if (fileName.endsWith(".one2")) {
 			producer = new One2HistoryReader(fileName, from, to, furtherjobs, jobType);
+		} else if (fileName.endsWith(".log")) {
+			producer = new PreziReader(fileName, from, to, furtherjobs, jobType);
 		} else {
 			return null;
 		}
