@@ -1,13 +1,12 @@
-package hu.mta.sztaki.lpds.cloud.simulator.helpers.trace;
+package hu.mta.sztaki.lpds.cloud.simulator.helpers.trace.file;
 
 import java.lang.reflect.InvocationTargetException;
 
 import hu.mta.sztaki.lpds.cloud.simulator.helpers.job.Job;
-import hu.mta.sztaki.lpds.cloud.simulator.helpers.trace.file.TraceFileReaderFoundation;
 
 public class PreziReader extends TraceFileReaderFoundation {
 
-	protected PreziReader(String fileName, int from, int to, boolean allowReadingFurther, Class<? extends Job> jobType)
+	public PreziReader(String fileName, int from, int to, boolean allowReadingFurther, Class<? extends Job> jobType)
 			throws SecurityException, NoSuchMethodException {
 		super("LOG format", fileName, from, to, allowReadingFurther, jobType);
 		// TODO Auto-generated constructor stub
