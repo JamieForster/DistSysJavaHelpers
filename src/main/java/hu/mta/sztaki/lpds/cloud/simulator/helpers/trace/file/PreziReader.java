@@ -1,6 +1,7 @@
 package hu.mta.sztaki.lpds.cloud.simulator.helpers.trace.file;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 
 import hu.mta.sztaki.lpds.cloud.simulator.helpers.job.Job;
 
@@ -50,7 +51,11 @@ public class PreziReader extends TraceFileReaderFoundation {
 			return jobCreator.newInstance(id, submit, queue, exec, nprocs, ppCpu, ppMem, user, group, executable,
 					preceding, delayAfter);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			// TODO Auto-generated catch block
+			// Catch array index out of bounds exceptions
+			e.printStackTrace();
+			return null;
+		} catch (NumberFormatException e) {
+			// Catch number parsing exceptions
 			e.printStackTrace();
 			return null;
 		}
