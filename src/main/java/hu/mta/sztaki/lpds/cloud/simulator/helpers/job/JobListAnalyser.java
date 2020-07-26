@@ -63,6 +63,52 @@ public class JobListAnalyser {
 		return Collections.max(joblist, JobListAnalyser.stopTimeComparator)
 				.getStoptimeSecs();
 	}
+	
+	/**
+	 * Determine an estimation of the Application Performance Index of the job-list 
+	 * in order to gauge user satisfaction. This should be queried only after all jobs have terminated.
+	 * 
+	 * @author Jamie Forster
+	 * 
+	 * @param joblist
+	 * 				the job-list to be analyzed.
+	 * 
+	 * @param targetTime
+	 * 				the targeted or expected process completion time.
+	 * 
+	 * @return the simulation's apdex rating between 0 and 1
+	 * 
+	 */
+	public static double getApdex(List<Job> joblist, double targetTime) {
+		double time; // Time taken
+		int satisfied = 0, tolerant = 0, frustrated = 0; // Satisfaction zone counters
+		
+		// Get total satisfied/tolerating count
+		for (int i = 0; i < joblist.size(); i++) {
+			time = joblist.get(i).getRealqueueTime();
+			
+			if(time != -1) {
+				// If a job has been queue'd, check if it has been simulated.
+				if(joblist.get(i).getRealstopTime() != -1) {
+					// If job has been simulated and completed, add its 'true' simulated execution time.
+					time += joblist.get(i).getRealstopTime();
+				}
+
+				// Tally up the user satisfactions as according to Apdex satisfaction zone ranges
+				if (time < targetTime) {
+					satisfied++;
+				} else if (time > targetTime && time < (targetTime * 4)) {
+					tolerant++;
+				} else {
+					frustrated++;
+				}
+			}
+			
+		}
+
+		// Calculate the ApDex rating and return it.
+		return (double) (satisfied + (tolerant / 2)) / joblist.size();
+	}
 
 	/**
 	 * A job comparator that allows the ordering of jobs based on their
